@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bezkoder.spring.test.model.Tutorial;
 import com.bezkoder.spring.test.repository.TutorialRepository;
 
-@CrossOrigin(origins = "http://localhost:8081")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api")
 public class TutorialController {
@@ -30,23 +30,12 @@ public class TutorialController {
   TutorialRepository tutorialRepository;
 
   @GetMapping("/tutorials")
-  public ResponseEntity<List<Tutorial>> getAllTutorials(@RequestParam(required = false) String title) {
-    try {
-      List<Tutorial> tutorials = new ArrayList<Tutorial>();
+  public ResponseEntity<String> getAllTutorials(@RequestParam(required = false) String title) {
 
-      if (title == null)
-        tutorialRepository.findAll().forEach(tutorials::add);
-      else
-        tutorialRepository.findByTitleContaining(title).forEach(tutorials::add);
 
-      if (tutorials.isEmpty()) {
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-      }
 
-      return new ResponseEntity<>(tutorials, HttpStatus.OK);
-    } catch (Exception e) {
-      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+
+           return new ResponseEntity<String>(HttpStatus.OK);
   }
 
   @GetMapping("/tutorials/{id}")
